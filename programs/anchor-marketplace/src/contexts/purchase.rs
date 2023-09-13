@@ -29,6 +29,12 @@ pub struct Purchase<'info> {
         token::mint = maker_mint
     )]
     vault: Account<'info, TokenAccount>,
+    #[account(
+        seeds = [b"treasury", marketplace.key().as_ref()],
+        bump = marketplace.treasury_bump
+    )]
+    
+    treasury: SystemAccount<'info>,
     maker_mint: Account<'info, Mint>,
     collection_mint: Account<'info, Mint>,
     #[account(

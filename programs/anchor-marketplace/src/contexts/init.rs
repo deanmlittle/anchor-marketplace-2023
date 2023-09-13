@@ -25,6 +25,11 @@ pub struct Initialize<'info> {
         mint::authority = rewards,
     )]
     rewards: Account<'info, Mint>,
+    #[account(
+        seeds = [b"treasury", marketplace.key().as_ref()],
+        bump
+    )]
+    treasury: SystemAccount<'info>,
     token_program: Program<'info, Token>,
     system_program: Program<'info, System>
 }
@@ -36,6 +41,7 @@ impl<'info> Initialize<'info> {
         self.marketplace.fee = fee;
         self.marketplace.name = name;
         self.marketplace.bump = *bumps.get("marketplace").ok_or(MarketplaceError::BumpError)?;
+        self.marketplace.treasury_bump = *bumps.get("treasury").ok_or(MarketplaceError::BumpError)?;
         Ok(())
     }
 }
